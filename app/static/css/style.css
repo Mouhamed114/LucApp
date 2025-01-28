@@ -1,0 +1,148 @@
+/* Style général pour le corps */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Titre principal */
+.dashboard-title {
+    font-size: 2.5rem;
+    margin: 30px 0 40px;
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Form-card (général) */
+.form-card, .sensor-card {
+    border: 1px solid #e3e6ea;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 32px;
+}
+
+.form-card:hover, .sensor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Alterner les couleurs d'arrière-plan pour les capteurs */
+.sensor-card:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Numéro des capteurs */
+.sensor-card h4, .form-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+/* Section Title */
+.section-title {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #495057;
+    font-weight: bold;
+}
+
+/* Boutons */
+.btn-add-sensor, .btn-submit {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+
+}
+
+.btn-add-sensor {
+    background-color: #007bff;
+}
+
+.btn-add-sensor:hover {
+    background-color: #0056b3;
+}
+
+
+/* Bouton Remove Sensor */
+.btn-remove-sensor {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.btn-remove-sensor:hover {
+    background: #c82333;
+}
+
+/* Champs dépendants du tracker */
+.tracker-dependent-fields {
+    padding: 10px;
+    border-left: 4px solid #007bff;
+    background-color: #eef6ff;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Espacement entre les champs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #495057;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+.progress-bar-container {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    height: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background-color: #0d6efd;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+

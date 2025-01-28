@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Irradiance Sensor Configuration YAML Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1 class="dashboard-title"> Irradiance Sensor Configuration YAML Generator</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="container mt-3">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" novalidate>
+            {{ project_form.hidden_tag() }}
+            {{ location_form.hidden_tag() }}
+            {{ sensor_form.hidden_tag() }}
+            {{ analysis_form.hidden_tag() }}
+
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+            <span id="progress-text">0%</span>
+
+            <!-- Project Details Section -->
+            <div class="form-step active">
+                <div class="form-section">
+                    <div class="form-card">
+                        <h3>Project Name</h3>
+                        <div class="form-group">
+                            {{ project_form.project_name.label }}
+                            {{ project_form.project_name(class="form-control") }}
+                            {% if project_form.project_name.errors %}
+                            <ul class="text-danger">
+                                {% for error in project_form.project_name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-next">Next</button>
+                {% if session['yaml_file'] %}
+                <a href="{{ url_for('main.download_file') }}" class="btn btn-primary">Download YAML</a>
+                {% endif %}
+            </div>
+
+            <!-- Location Details Section -->
+            <div class="form-step">
+                <div class="form-section">
+                    <div class="form-card">
+                        <h3>Location Details</h3>
+                        <div class="form-group">
+                            {{ location_form.latitude.label }}
+                            {{ location_form.latitude(class="form-control", type="number", step="any") }}
+                            {% if location_form.latitude.errors %}
+                            <ul class="text-danger">
+                                {% for error in location_form.latitude.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ location_form.longitude.label }}
+                            {{ location_form.longitude(class="form-control", type="number", step="any") }}
+                            {% if location_form.longitude.errors %}
+                            <ul class="text-danger">
+                                {% for error in location_form.longitude.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ location_form.altitude.label }}
+                            {{ location_form.altitude(class="form-control", type="number", step="any") }}
+                            {% if location_form.altitude.errors %}
+                            <ul class="text-danger">
+                                {% for error in location_form.altitude.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ location_form.timezone.label }}
+                            {{ location_form.timezone(class="form-control") }}
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-prev">Previous</button>
+                <button type="button" class="btn btn-primary btn-next">Next</button>
+            </div>
+
+            <!-- Sensors Section -->
+            <div class="form-step">
+
+                <div class="form-section">
+                    <div id="sensors-container">
+                        <div class="sensor sensor-card form-card" id="sensor-0">
+                            <h4>Sensor 1</h4>
+                            <button type="button" class="btn btn-danger btn-remove-sensor" style="display: none;"
+                                onclick="removeSensor('sensor-0')">&times;</button>
+
+                            <!-- Sensor Fields -->
+
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].anchor_name.label }}
+                                {{ sensor_form.sensors[0].anchor_name(class="form-control") }}
+                                {% if sensor_form.sensors[0].anchor_name.errors %}
+                                <ul class="text-danger">
+                                    {% for error in sensor_form.sensors[0].anchor_name.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+
+                            <div class="section-title">Plane of Array</div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].plane_of_array.tilt.label }}
+                                {{ sensor_form.sensors[0].plane_of_array.tilt(class="form-control", type="number",
+                                step="any") }}
+                                {% if sensor_form.sensors[0].plane_of_array.tilt.errors %}
+                                <ul class="text-danger">
+                                    {% for error in sensor_form.sensors[0].plane_of_array.tilt.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].plane_of_array.azimuth.label }}
+                                {{ sensor_form.sensors[0].plane_of_array.azimuth(class="form-control", type="number",
+                                step="any") }}
+                                {% if sensor_form.sensors[0].plane_of_array.azimuth.errors %}
+                                <ul class="text-danger">
+                                    {% for error in sensor_form.sensors[0].plane_of_array.azimuth.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].plane_of_array.tracker.label }}
+                                {{ sensor_form.sensors[0].plane_of_array.tracker(class="form-check-input
+                                tracker-checkbox", id="tracker-checkbox-0") }}
+                            </div>
+
+                            <div class="tracker-dependent-fields" id="tracker-dependent-fields-0"
+                                style="display: none;">
+                                <div class="form-group">
+                                    {{ sensor_form.sensors[0].plane_of_array.axis_tilt.label }}
+                                    {{ sensor_form.sensors[0].plane_of_array.axis_tilt(class="form-control",
+                                    type="number", step="any") }}
+                                    {% if sensor_form.sensors[0].plane_of_array.axis_tilt.errors %}
+                                    <ul class="text-danger">
+                                        {% for error in sensor_form.sensors[0].plane_of_array.axis_tilt.errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ sensor_form.sensors[0].plane_of_array.axis_azimuth.label }}
+                                    {{ sensor_form.sensors[0].plane_of_array.axis_azimuth(class="form-control",
+                                    type="number", step="any") }}
+                                </div>
+                                <div class="form-group">
+                                    {{ sensor_form.sensors[0].plane_of_array.max_angle.label }}
+                                    {{ sensor_form.sensors[0].plane_of_array.max_angle(class="form-control",
+                                    type="number", step="any") }}
+                                </div>
+                                <div class="form-group">
+                                    {{ sensor_form.sensors[0].plane_of_array.gcr.label }}
+                                    {{ sensor_form.sensors[0].plane_of_array.gcr(class="form-control", type="number",
+                                    step="any") }}
+
+                                </div>
+                            </div>
+
+                            <div class="section-title">Sensor Details</div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].sensor_type.label }}
+                                {{ sensor_form.sensors[0].sensor_type(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].manufacturer.label }}
+                                {{ sensor_form.sensors[0].manufacturer(class="form-control") }}
+                                {% if sensor_form.sensors[0].manufacturer.errors %}
+                                <ul class="text-danger">
+                                    {% for error in sensor_form.sensors[0].manufacturer.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ sensor_form.sensors[0].installation_date.label }}
+                                {{ sensor_form.sensors[0].installation_date(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                {{
+                                sensor_form.sensors[0].calibration_certification_details.calibration_certification_date.label
+                                }}
+                                {{
+                                sensor_form.sensors[0].calibration_certification_details.calibration_certification_date(class="form-control")
+                                }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADD SENSOR -->
+                    <button type="button" class="btn btn-secondary btn-add-sensor" onclick="addSensor()">Add
+                        Sensor</button>
+
+
+
+                </div>
+
+                <button type="button" class="btn btn-secondary btn-prev">Previous</button>
+                <button type="button" class="btn btn-primary btn-next">Next</button>
+            </div>
+            <!-- Analysis Section -->
+            <div class="form-step">
+                <div class="form-section">
+                    <div class="form-card">
+                        <h3>Analysis</h3>
+                        <div class="form-group">
+                            {{ analysis_form.label.label(for="analysis-form-label") }}
+                            {{ analysis_form.label(class="form-control", id="analysis-form-label") }}
+                            {% if analysis_form.label.errors %}
+                            <ul class="text-danger">
+                                {% for error in analysis_form.label.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ analysis_form.start_analysis.label(for="analysis-form-start-date") }}
+                            {{ analysis_form.start_analysis(class="form-control", id="analysis-form-start-date") }}
+                            {% if analysis_form.start_analysis.errors %}
+                            <ul class="text-danger">
+                                {% for error in analysis_form.start_analysis.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+
+                        </div>
+                        <div class="form-group">
+                            {{ analysis_form.end_analysis.label(for="analysis-form-end-date") }}
+                            {{ analysis_form.end_analysis(class="form-control", id="analysis-form-end-date") }}
+                            {% if analysis_form.end_analysis.errors %}
+                            <ul class="text-danger">
+                                {% for error in analysis_form.end_analysis.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ analysis_form.freq_sim.label }}
+                            {{ analysis_form.freq_sim(class="form-control") }}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary btn-prev">Previous</button>
+                <button type="submit" class="btn btn-success">Generate YAML</button>
+
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+</html>
