@@ -36,7 +36,7 @@ Les capteurs d'irradiation jouent un role crucial dans les projets d'energie sol
 1. **Cloner le dépôt du projet** :
 
    ```bash
-   git clone 
+   git clone git@github.com:Mouhamed114/LucApp.git
    cd TEST_LUCISUN
 
 2. **Créer un environnement virtuel (optionnel mais recommandé)** :
