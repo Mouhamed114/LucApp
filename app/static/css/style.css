@@ -146,3 +146,13 @@ body {
     transition: width 0.3s ease;
 }
 
+.is-invalid {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+.error-message {
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}

@@ -27,7 +27,7 @@
         </div>
         {% endif %}
         {% endwith %}
-        <form method="POST" novalidate>
+        <form method="POST" >
             {{ project_form.hidden_tag() }}
             {{ location_form.hidden_tag() }}
             {{ sensor_form.hidden_tag() }}
@@ -70,7 +70,7 @@
                         <h3>Location Details</h3>
                         <div class="form-group">
                             {{ location_form.latitude.label }}
-                            {{ location_form.latitude(class="form-control", type="number", step="any") }}
+                            {{ location_form.latitude(class="form-control", type="number", step="any", min="-90", max="90") }}
                             {% if location_form.latitude.errors %}
                             <ul class="text-danger">
                                 {% for error in location_form.latitude.errors %}
@@ -288,7 +288,7 @@
                 </div>
 
                 <button type="button" class="btn btn-secondary btn-prev">Previous</button>
-                <button type="submit" class="btn btn-success">Generate YAML</button>
+                <button type="submit" id="submit-btn" class="btn btn-success">Generate YAML</button>
 
             </div>
         </form>

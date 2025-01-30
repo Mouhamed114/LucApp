@@ -59,13 +59,13 @@ class PlaneOfArrayForm(FlaskForm):
     azimuth = FloatField(
     'Azimuth (degrees)',
     validators=[
-        DataRequired(message="Azimuth is required."),
+        InputRequired(message="Azimuth is required."),
         NumberRange(min=0, max=360, message="Azimuth must be between 0 and 360 degrees.")
     ]
 )
     tracker = BooleanField('Tracker', default=False)
-    axis_tilt = FloatField('Axis Tilt', validators=[Optional()])
-    axis_azimuth = FloatField('Axis Azimuth', validators=[Optional()])
+    axis_tilt = FloatField('Axis_Tilt (degrees)', validators=[Optional()])
+    axis_azimuth = FloatField('Axis_Azimuth (degrees)', validators=[Optional()])
     max_angle = FloatField('Max Angle', validators=[Optional()])
     gcr = FloatField('GCR', validators=[Optional()])
     class Meta:
